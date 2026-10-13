@@ -1,0 +1,81 @@
+<div class="container my-4">
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mb-4">
+    <div class="w-100 max-width-search">
+      <input 
+      type="text" 
+      placeholder="Search characters by name..." 
+      [value]="searchQuery()" 
+      (input)="onSearch($event)" 
+      class="form-control form-control-lg shadow-sm"
+    />
+    </div>
+    
+    <div class="btn-group shadow-sm text-nowrap" role="group" aria-label="Layout view mode switch">
+      <button type="button" 
+        class="btn btn-outline-primary px-4" [class.active]="viewMode() === 'grid'" (click)="toggleView('grid')">Grid View</button>
+      <button type="button" 
+        class="btn btn-outline-primary px-4" [class.active]="viewMode() === 'list'" (click)="toggleView('list')">List View</button>
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+     <div class="alert alert-danger shadow-sm role='alert'">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage() }}
+    </div>
+  } @else {
+      @if (viewMode() === 'grid') {
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @for (char of characters(); track char.id) {
+          <div class="col">
+            <div class="card h-100 shadow-sm border-0 bg-light clickable-card" (click)="navigateToDetail(char.id)">
+              <img [src]="char.image" [alt]="char.name" class="card-img-top border-bottom" />
+              <div class="card-body">
+                <h5 class="card-title text-primary fw-bold mb-3">{{ char.name }}</h5>
+                <div class="small text-muted space-y-1">
+                  <p class="mb-1"><strong>Status:</strong> {{ char.status }}</p>
+                  <p class="mb-1"><strong>Species:</strong> {{ char.species }}</p>
+                  <p class="mb-1"><strong>Gender:</strong> {{ char.gender }}</p>
+                  <p class="mb-0"><strong>Total Episodes:</strong> {{ char.episode.length }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (viewMode() === 'list') {
+      <div class="list-group shadow-sm">
+        @for (char of characters(); track char.id) {
+          <div 
+            class="list-group-item list-group-item-action d-flex flex-column flex-sm-row align-items-sm-center justify-content-between p-3 gap-3 cursor-pointer" 
+            (click)="navigateToDetail(char.id)">
+            
+            <div class="d-flex align-items-center gap-3">
+              <!-- Rounded profile avatar list variant -->
+              <img [src]="char.image" [alt]="char.name" class="rounded-circle object-fit-cover flex-shrink-0" style="width: 60px; height: 60px;" />
+              <div>
+                <h5 class="mb-1 h6 text-primary fw-bold">{{ char.name }}</h5>
+                <div class="small text-muted flex-wrap d-flex gap-2">
+                  <span>{{ char.species }}</span> • 
+                  <span>{{ char.gender }}</span> • 
+                  <span>Total Episodes: {{ char.episode.length }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="align-self-start align-self-sm-center">
+              <span class="badge rounded-pill px-3 py-2 fs-7" 
+                    [class.bg-success]="char.status === 'Alive'"
+                    [class.bg-danger]="char.status === 'Dead'"
+                    [class.bg-secondary]="char.status === 'unknown'">
+                {{ char.status }}
+              </span>
+            </div>
+            
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

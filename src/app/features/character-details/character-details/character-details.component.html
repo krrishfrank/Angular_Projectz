@@ -1,0 +1,72 @@
+<div class="container my-4">
+  @if (character(); as char) {
+    <div class="mb-4">
+        <button routerLink="/characters" class="btn btn-outline-secondary px-3 shadow-sm d-inline-flex align-items-center gap-2">Back to Overview</button>
+    </div>
+
+    <div class="card border-0 shadow-sm bg-light p-4 mb-4">
+      <div class="d-flex flex-column flex-sm-row align-items-center gap-4">
+        <img 
+          [src]="char.image" 
+          [alt]="char.name" 
+          class="rounded-circle border border-4 border-white shadow-sm object-fit-cover" 
+          style="width: 120px; height: 120px;" 
+        />
+        <div class="text-center text-sm-start">
+          <h2 class="display-6 fw-bold text-dark mb-1">{{ char.name }}</h2>
+          <p class="text-muted mb-0">Character Details & Featured History Reference</p>
+        </div>
+      </div>
+    </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-4 border-bottom bg-white rounded-top">
+          <h3 class="h5 m-0 fw-bold text-secondary">Featured Episodes List</h3>
+          <div class="w-100 max-width-filter">
+            <input 
+              type="text" 
+              placeholder="Filter episodes by name..." 
+              (input)="onFilter($event)"
+              class="form-control shadow-sm"/>
+          </div>
+      </div>
+
+      <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light text-uppercase fs-7 tracking-wider">
+              <tr>
+                <th scope="col" class="ps-4 py-3">Episode Name</th>
+                <th scope="col" class="py-3">Air Date</th>
+                <th scope="col" class="pe-4 py-3 text-md-end">Code Parameter Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (ep of filteredEpisodes(); track ep.id) {
+                <tr>
+                  <td class="ps-4 py-3">
+                    <strong class="text-primary text-wrap-break">{{ ep.name }}</strong>
+                  </td>
+                  <td class="text-secondary py-3">{{ ep.air_date }}</td>
+                  <td class="pe-4 py-3 text-md-end">
+                    <span class="badge bg-info text-dark rounded-pill px-3 py-2 fw-semibold">
+                      {{ ep.episode }}
+                    </span>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="3" class="text-center text-muted py-5 bg-light">
+                    <div class="fs-5 mb-1">No matching records</div>
+                    <small>No episodes found matching search constraints.</small>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+}
+</div>
