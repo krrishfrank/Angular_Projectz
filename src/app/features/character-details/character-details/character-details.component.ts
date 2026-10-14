@@ -9,7 +9,6 @@ import { Character, Episode } from '../../../core/models/character';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './character-details.component.html',
-  styleUrl: './character-details.component.scss'
 })
 export class CharacterDetailsComponent implements OnInit {
 
